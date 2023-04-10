@@ -3,6 +3,7 @@ loginForm.addEventListener('submit', async (event) => {
     event.preventDefault();
     const email = document.querySelector('#email').value;
     const password = document.querySelector('#password').value;
+    const wrongCombinaison = document.querySelector(".wrong");
     const response = await fetch('http://localhost:5678/api/users/login', {
         method: 'POST',
         headers: {
@@ -16,8 +17,12 @@ loginForm.addEventListener('submit', async (event) => {
     const data = await response.json();
     if (response.ok) {
         localStorage.setItem('token', data.token);
-        window.location.href = '/';
+        window.location.href = 'index.html';
     } else {
-        alert(data.message);
+        wrongCombinaison.classList.remove("wrong-animate");
+        setTimeout(function() {
+            wrongCombinaison.classList.add("wrong-animate");
+        }, 10);
+        wrongCombinaison.innerHTML = "<p>Email ou Mot de passe incorrect.</p>";
     }
 });
