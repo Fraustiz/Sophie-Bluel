@@ -292,7 +292,10 @@ h2{
 .modal {
 	display: none;
 	position: fixed;
-	z-index: 99;
+	flex-direction: column;
+	justify-content: center;
+	align-items: center;
+	z-index: 1;
 	left: 0;
 	top: 0;
 	width: 100%;
@@ -302,23 +305,28 @@ h2{
 }
 
 .modal-content {
+	z-index: 5;
 	display: none;
 	flex-direction: column;
 	background-color: white;
-	margin: 15% auto;
-	width: 30%;
+	width: 560px;
+	min-height: 350px;
 	height: auto;
 	border-radius: 10px;
 	padding: 30px;
 	box-sizing: border-box;
 }
 
-.modal-content a {
+.modal-content-nav {
 	display: flex;
 	justify-content: flex-end;
 }
 
-.modal-content h2 {
+.close:hover, .back:hover {
+	cursor: pointer;
+}
+
+.modal-content h2, .modal-content-add h2 {
 	margin-top: 20px;
 	font-family: "Work Sans";
 	color: black;
@@ -333,9 +341,42 @@ h2{
 	margin-inline: 40px;
 }
 
+.modal-content article {
+	display: flex;
+	position: relative;
+	width: 100%;
+}
+
+.work-btn {
+	position: absolute;
+	display: flex;
+	width: 76px;
+	justify-content: flex-end;
+	flex-direction: row;
+	color: white;
+	gap: 3px;
+	margin-top: 4px;
+}
+
+.work-btn i {
+	border-radius: 4px;
+	padding: 4px;
+	background-color: black;
+	font-size: 9px;
+}
+
+.work-btn i:hover {
+	cursor: pointer;
+}
+
+.fa-arrows-up-down-left-right {
+	display: none;
+}
+
 .modal-content img {
 	width: 80px;
 	height: 100px;
+	margin-bottom: 4px;
 }
 
 hr {
@@ -363,6 +404,116 @@ hr {
 	text-decoration: underline;
 }
 
+.modal-content-add {
+	display: none;
+	flex-direction: column;
+	background-color: white;
+	width: 30%;
+	min-height: 350px;
+	height: auto;
+	border-radius: 10px;
+	padding: 30px;
+	box-sizing: border-box;	
+}
+
+.modal-content-add-nav {
+	display: flex;
+	flex-direction: row;
+	justify-content: space-between;
+}
+
+.modal-content-add form {
+	display: flex;
+	flex-direction: column;
+}
+
+.modal-content-add label {
+	font-family: "Work Sans";
+	font-weight: bold;
+}
+
+.modal-content-add form {
+	margin-inline: 70px;
+}
+
+.modal-content-add hr {
+	width: 100%;
+	border-top: 1px solid #B3B3B3;
+}
+
+.modal-content-add input[type="submit"] {
+	padding: 10px 7em;
+	background-color: #1D6154;
+	width: auto;
+}
+
+.modal-content-add input[type="submit"]:disabled, .modal-content-add input[type="submit"]:disabled:hover {
+	background-color: #A7A7A7;
+	cursor: not-allowed;
+}
+
+.modal-content-add input[type="submit"]:hover {
+	background-color: #0E2F28;
+	cursor: pointer;
+}
+
+.add-img {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	background-color: #E8F1F6;
+	border-radius: 3px;
+	padding: 28px 0 19px 0;
+}
+
+.add-img i {
+	font-size: 58px;
+	color: #B9C5CC;
+}
+
+.add-img button {
+	background-color: #CBD6DC;
+	border-radius: 50px;
+	padding: 10px 33px;
+	color: #306685;
+	margin: 21px 0 7px 0;
+}
+
+.add-img button:hover {
+	cursor: pointer;
+	background-color: #aacadb;
+}
+
+.add-img p {
+	font-size: 10px;
+}
+
+.add-img-options {
+	display: flex;
+	flex-direction: column;
+	margin-top: 30px;
+	gap: 20px;
+}
+
+.add-img-options div {
+	display: flex;
+	flex-direction: column;
+	gap: 10px;
+}
+
+.add-img-options input[type="text"], select#select_category {
+	font-family: "Work Sans";
+	font-size: 20px;
+	border: 1px solid white;
+	height: 50px;
+	padding-inline: 10px;
+	box-shadow: 0px 4px 14px rgba(0, 0, 0, 0.09);
+}
+
+select#select_category:hover {
+	cursor: pointer;
+}
+
 .edit-mode ul{
 	display: none;
 	flex-direction: row;
@@ -376,7 +527,7 @@ hr {
 	background-color: black;
 	list-style-type: none;
 	gap: 10px;
-	z-index: 100;
+	z-index: 2;
 }
 
 .edit-mode i {

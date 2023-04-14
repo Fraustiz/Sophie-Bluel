@@ -90,30 +90,165 @@ function getToken() {
             let modalDisplay = document.querySelectorAll(".modal, .modal-content");
             for (let i = 0; i < modalDisplay.length; i++) {
                 modalDisplay[i].style.display = "flex";
+                document.body.style.overflow = "hidden";
             }
+
+            const works = document.querySelectorAll('.work');
+            works.forEach(work => {
+            const arrows = work.querySelectorAll('.fa-solid.fa-arrows-up-down-left-right');
+            work.addEventListener('mouseenter', () => {
+                arrows.forEach(arrow => {
+                arrow.style.display = 'flex';
+                });
+            });
+            work.addEventListener('mouseleave', () => {
+                arrows.forEach(arrow => {
+                arrow.style.display = 'none';
+                });
+            });
+            });
         });
 
-        const closeEditWorks = document.querySelector(".close");
-        closeEditWorks.addEventListener("click", function(event) {
-            event.preventDefault();
-            let modalNone = document.querySelectorAll(".modal, .modal-content");
-            for (let i = 0; i < modalNone.length; i++) {
-                modalNone[i].style.display = "none";
-            }
-        });
+        
+        const modalContent = document.querySelectorAll(".modal-content, .modal-content-add, #submit-img");
+        for (let i = 0; i < modalContent.length; i++) {
+            modalContent[i].addEventListener("click", function(event) {
+                event.stopPropagation();
+            });
+        }
 
-        const worksContainer = document.querySelector(".work-edit");
+        const closeEditWorks = document.querySelectorAll(".modal, .close");
+        for (let i = 0; i < closeEditWorks.length; i++) {
+            closeEditWorks[i].addEventListener("click", function() {
+                location.reload()
+            });
+        }
 
         fetch('http://localhost:5678/api/works')
         .then(response => response.json())
         .then(works => {
-            render(works);
+            renders(works);
         });
 
-        function render(works) {
-            const articles = works.map(work => `<figure class="work" data-id="${work.category.id}"><img src="${work.imageUrl}"></figure>`).join("");
-            worksContainer.innerHTML = articles;
+        const worksContainers = document.querySelector(".work-edit");
+        function renders(works) {
+            const articles = works.map(work => `<figure class="work" data-id="${work.category.id}"><div class="work-btn"><i class="fa-solid fa-arrows-up-down-left-right"></i><i class="fa-solid fa-trash-can"></i></div><img src="${work.imageUrl}"></figure>`).join("");
+            worksContainers.innerHTML = articles;
         }
+
+        const addWork = document.querySelector(".modal-content button");
+        addWork.addEventListener("click", function(event) {
+            let modalNone = document.querySelector(".modal-content");
+            let modalAdd = document.querySelector(".modal-content-add");
+            modalNone.style.display = "none";
+            modalAdd.style.display = "flex";
+
+            const backBtn = document.querySelector(".back");
+            backBtn.addEventListener("click", () => {
+                modalAdd.style.display = "none";
+                modalNone.style.display = "flex";
+            });
+
+
+            fetch('http://localhost:5678/api/categories')
+            .then(response => response.json())
+            .then(categories => {
+                renderSelectOptions(categories);
+            });
+
+            function renderSelectOptions(categories) {
+                const selectCategory = document.querySelector("#select_category");
+                const options = categories.map(category => `<option value="${category.id}">${category.name}</option>`).join("");
+                selectCategory.innerHTML = `<option value="" disabled selected style="display:none;"></option>${options}`;
+            }
+
+            const addImageButton = document.querySelector(".add-img button");
+            const addImageInput = document.querySelector(".add-img input[type=file]");
+
+            addImageButton.addEventListener("click", function(event) {
+                event.preventDefault();
+                addImageInput.click();
+            });
+
+            document.addEventListener('DOMContentLoaded', function() {
+                var form = document.querySelector('.form-add-img');
+                form.addEventListener('submit', function(event) {
+                    event.preventDefault();
+
+                    var token = localStorage.getItem('token');
+
+                    var formData = new FormData(form);
+
+                    formData.append('token', token);
+
+                    var xhr = new XMLHttpRequest();
+
+                    xhr.open('POST', 'http://localhost:5678/api/works');
+
+                    xhr.setRequestHeader('Authorization', 'Bearer ' + token);
+                    xhr.setRequestHeader('Accept', 'application/json');
+
+                    xhr.send(formData);
+
+                    xhr.onreadystatechange = function() {
+                    if (xhr.readyState === 4) {
+                        if (xhr.status === 200) {
+                        console.log('La requête POST a été envoyée avec succès');
+                        } else {
+                        console.log('La requête POST a échoué');
+                        }
+                    } else {
+                        console.log("erreur");
+                    }
+                    };
+                });
+            });
+
+            imgInp.onchange = evt => {
+                const [file] = imgInp.files;
+                if (file) {
+                    let imageAdd = document.querySelector(".add-img");
+                    let imgElement = document.createElement("img");
+                    imgElement.src = URL.createObjectURL(file);
+                    imgElement.onload = function() {
+                        let width = this.width;
+                        let height = this.height;
+                        let parentWidth = imageAdd.clientWidth;
+                        let parentHeight = imageAdd.clientHeight;
+                        let ratio = Math.min(parentWidth/width, parentHeight/height);
+                        imgElement.style.width = `${ratio * width}px`;
+                        imgElement.style.height = `${ratio * height}px`;
+                        imageAdd.innerHTML = "";
+                        imageAdd.appendChild(imgElement);
+                    };
+                }
+            }
+
+            const addImageInput2 = document.querySelector('#imgInp');
+            const workNameInput = document.querySelector('input[name="work_name"]');
+            const workCategorySelect = document.querySelector('select[name="work_category"]');
+            const submitButton = document.querySelector('input[type="submit"]');
+
+            addImageInput2.addEventListener('change', () => {
+            checkInputs();
+            });
+
+            workNameInput.addEventListener('input', () => {
+            checkInputs();
+            });
+
+            workCategorySelect.addEventListener('input', () => {
+            checkInputs();
+            });
+
+            function checkInputs() {
+                if (addImageInput2.value !== '' && workNameInput.value !== '' && workCategorySelect.value !== '') {
+                    submitButton.removeAttribute('disabled');
+                } else {
+                    submitButton.setAttribute('disabled', '');
+                }
+            }
+        });
     }
 }
 

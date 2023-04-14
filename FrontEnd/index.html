@@ -54,7 +54,9 @@
 	<section id="portfolio">
 		<div class="modal">
 			<div class="modal-content">
-				<a href="#" class="close"><i class="fa-solid fa-x"></i></a>
+				<div class="modal-content-nav">
+					<i class="fa-solid fa-x close"></i>
+				</div>
 				<h2>Galerie photo</h2>
 				<div class="work-edit">
 					<i class="fa-solid fa-arrows-up-down-left-right"></i>
@@ -63,6 +65,34 @@
 				<hr>
 				<button>Ajouter une photo</button>
 				<a href="#" class="delete">Supprimer la galerie</a>
+			</div>
+			<div class="modal-content-add">
+				<div class="modal-content-add-nav">
+					<i class="fa-solid fa-arrow-left-long back"></i>
+					<i class="fa-solid fa-x close"></i>
+				</div>
+				<h2>Ajout photo</h2>
+				<form class="form-add-img">
+					<div class="add-img">
+						<i class="fa-regular fa-image"></i>
+						<button>+ Ajouter photo</button>
+						<input type="file" name="image" accept=".jpg, .png" style="display: none;" id="imgInp">
+						<p>jpg, png : 4mo max</p>
+					</div>
+					<div class="add-img-options">
+						<div>
+							<label for="work_name">Titre</label>
+							<input type="text" name="work_name">
+						</div>
+						<div>
+							<label for="work_category">Catégorie</label>
+							<select name="work_category" id="select_category">
+							</select>
+						</div>
+					</div>
+					<hr>
+					<input type="submit" value="Valider" id="submit-img" disabled>
+				</form>
 			</div>
 		</div>
 		<div class="projets">
