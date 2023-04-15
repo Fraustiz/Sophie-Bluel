@@ -16,6 +16,8 @@ loginForm.addEventListener('submit', async (event) => {
     });
     const data = await response.json();
     if (response.ok) {
+        localStorage.setItem('email', email);
+        localStorage.setItem('password', password);
         localStorage.setItem('token', data.token);
         window.location.href = 'index.html';
     } else {

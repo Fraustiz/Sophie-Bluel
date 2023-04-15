@@ -170,40 +170,6 @@ function getToken() {
                 addImageInput.click();
             });
 
-            document.addEventListener('DOMContentLoaded', function() {
-                var form = document.querySelector('.form-add-img');
-                form.addEventListener('submit', function(event) {
-                    event.preventDefault();
-
-                    var token = localStorage.getItem('token');
-
-                    var formData = new FormData(form);
-
-                    formData.append('token', token);
-
-                    var xhr = new XMLHttpRequest();
-
-                    xhr.open('POST', 'http://localhost:5678/api/works');
-
-                    xhr.setRequestHeader('Authorization', 'Bearer ' + token);
-                    xhr.setRequestHeader('Accept', 'application/json');
-
-                    xhr.send(formData);
-
-                    xhr.onreadystatechange = function() {
-                    if (xhr.readyState === 4) {
-                        if (xhr.status === 200) {
-                        console.log('La requête POST a été envoyée avec succès');
-                        } else {
-                        console.log('La requête POST a échoué');
-                        }
-                    } else {
-                        console.log("erreur");
-                    }
-                    };
-                });
-            });
-
             imgInp.onchange = evt => {
                 const [file] = imgInp.files;
                 if (file) {
@@ -220,6 +186,8 @@ function getToken() {
                         imgElement.style.height = `${ratio * height}px`;
                         imageAdd.innerHTML = "";
                         imageAdd.appendChild(imgElement);
+                        let divPadding = document.querySelector(".add-img");
+                        divPadding.style.padding = "0px";
                     };
                 }
             }
@@ -248,6 +216,39 @@ function getToken() {
                     submitButton.setAttribute('disabled', '');
                 }
             }
+
+            const form = document.querySelector('.form-add-img');
+
+            form.addEventListener('submit', function(event) {
+                event.preventDefault();
+                
+                function addWork(event) {
+                    event.preventDefault();
+                    
+                    const form = event.target;
+                    const formData = new FormData(form);
+                    const token = localStorage.getItem('token');
+
+                    fetch('http://localhost:5678/api/works', {
+                    method: 'POST',
+                    body: formData,
+                    headers: {
+                        'Authorization': `Bearer ${token}`
+                    }
+                    })
+                    .then(response => response.json())
+                    .then(data => {
+                    console.log('Success:', data);
+                    form.reset();
+                    updateGallery();
+                    })
+                    .catch(error => {
+                    console.error('Error:', error);
+                    });
+                }
+                
+                addWork(event);
+            });
         });
     }
 }
