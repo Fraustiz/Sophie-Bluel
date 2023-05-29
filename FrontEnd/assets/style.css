@@ -337,8 +337,8 @@ h2{
 	display: flex;
 	flex-direction: row;
 	flex-wrap: wrap;
-	justify-content: space-between;
 	margin-inline: 40px;
+	gap: 5px;
 }
 
 .modal-content article {
@@ -457,7 +457,7 @@ hr {
 	cursor: pointer;
 }
 
-.add-img {
+.replace-to-img {
 	display: flex;
 	flex-direction: column;
 	align-items: center;
@@ -466,12 +466,12 @@ hr {
 	padding: 28px 0 19px 0;
 }
 
-.add-img i {
+.replace-to-img i {
 	font-size: 58px;
 	color: #B9C5CC;
 }
 
-.add-img button {
+.replace-to-img button {
 	background-color: #CBD6DC;
 	border-radius: 50px;
 	padding: 10px 33px;
@@ -479,12 +479,12 @@ hr {
 	margin: 21px 0 7px 0;
 }
 
-.add-img button:hover {
+.replace-to-img button:hover {
 	cursor: pointer;
 	background-color: #aacadb;
 }
 
-.add-img p {
+.replace-to-img p {
 	font-size: 10px;
 }
 
@@ -501,7 +501,7 @@ hr {
 	gap: 10px;
 }
 
-.add-img-options input[type="text"], select#select_category {
+.add-img-options input[type="text"], select#category {
 	font-family: "Work Sans";
 	font-size: 20px;
 	border: 1px solid white;
@@ -510,7 +510,7 @@ hr {
 	box-shadow: 0px 4px 14px rgba(0, 0, 0, 0.09);
 }
 
-select#select_category:hover {
+select#category:hover {
 	cursor: pointer;
 }
 
@@ -595,9 +595,20 @@ select#select_category:hover {
 	grid-row-gap: 20px;
 }
 
+.gallery figure {
+	margin-bottom: 24px;
+}
+
 .gallery img {
 	width: 100%;
+	height: 500px;
+	object-fit: cover;
 }
+
+.work-edit img {
+	object-fit: cover;
+}
+
 #contact {
 	width: 50%;
 margin: auto;
